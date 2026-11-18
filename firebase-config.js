@@ -1,13 +1,11 @@
-// 1. Create a Firebase project at https://console.firebase.google.com/
-// 2. Register a Web App and paste its configuration below.
-// 3. Enable Authentication > Email/Password and create a Firestore database.
-// Leave the placeholder values unchanged to run the local preview mode.
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDYkpMAgS52YaRC64CD66NRD1g8UCnr64w",
+  authDomain: "gakala-driving-school.firebaseapp.com",
+  projectId: "gakala-driving-school",
+  storageBucket: "gakala-driving-school.firebasestorage.app",
+  messagingSenderId: "328450958669",
+  appId: "1:328450958669:web:aedd3e1bc4b9dccf5dc304",
+  measurementId: "G-BJQ50TL8Q7"
 };
-export const firebaseReady = !Object.values(firebaseConfig).some(v => String(v).startsWith("YOUR_"));
+
+export const firebaseReady = true;
