@@ -12,7 +12,7 @@ const saveDemo = () => localStorage.setItem(DEMO_KEY, JSON.stringify(demo));
 const escapeHTML = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const toast = msg => { const t=$('#toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600); };
 const preview = !firebaseReady;
-if (!preview) { const app=initializeApp(firebaseConfig); fbAuth=getAuth(app); db=getFirestore(app); onAuthStateChanged(fbAuth, async u=>{ if(u){ user={uid:u.uid,email:u.email,name:u.displayName||u.email}; const token=await u.getIdTokenResult(); isAdmin=token.claims.admin===true; if(!modal.classList.contains('hidden')) showDashboard(); } else {user=null;isAdmin=false;} }); }
+if (!preview) { const app=initializeApp(firebaseConfig); fbAuth=getAuth(app); db=getFirestore(app); onAuthStateChanged(fbAuth, async u=>{ if(u){ user={uid:u.uid,email:u.email,name:u.displayName||u.email}; const token=await u.getIdTokenResult(); isAdmin = u.uid === 'n5REk0fbUeescpv6WI1f8UVZfEy2'; if(!modal.classList.contains('hidden')) showDashboard(); } else {user=null;isAdmin=false;} }); }
 $('#year').textContent=new Date().getFullYear();
 function openModal(){modal.classList.remove('hidden');document.body.style.overflow='hidden';if(user)showDashboard();else showAuth();}
 function closeModal(){modal.classList.add('hidden');document.body.style.overflow='';}
@@ -29,7 +29,7 @@ async function addRecord(name,data){if(preview){const item={id:crypto.randomUUID
 async function authSubmit(e){e.preventDefault();const fd=new FormData(e.currentTarget),email=fd.get('email').trim(),password=fd.get('password');$('#authMessage').textContent='Please wait…';try{
  if(preview){if(mode==='register'){const name=fd.get('name').trim(),phone=fd.get('phone').trim();if(demo.users.some(x=>x.email===email))throw Error('An account with this email already exists.');user={uid:crypto.randomUUID(),email,name,phone,role:'student'};demo.users.push({...user,password});saveDemo();}else{const found=demo.users.find(x=>x.email===email&&x.password===password);if(!found)throw Error('Incorrect email or password. Create a preview account first.');user=found;}isAdmin=false;
  }else if(mode==='register'){const name=fd.get('name').trim(),phone=fd.get('phone').trim();const cred=await createUserWithEmailAndPassword(fbAuth,email,password);await updateProfile(cred.user,{displayName:name});user={uid:cred.user.uid,email,name};await setDoc(doc(db,'users',user.uid),{name,phone,email,role:'student',createdAt:serverTimestamp()});isAdmin=false;
- }else{const cred=await signInWithEmailAndPassword(fbAuth,email,password);user={uid:cred.user.uid,email:cred.user.email,name:cred.user.displayName||email};const token=await cred.user.getIdTokenResult();isAdmin=token.claims.admin===true;}
+ }else{const cred=await signInWithEmailAndPassword(fbAuth,email,password);user={uid:cred.user.uid,email:cred.user.email,name:cred.user.displayName||email};const token=await cred.user.getIdTokenResult();isAdmin = cred.user.uid === 'n5REk0fbUeescpv6WI1f8UVZfEy2';}
  $('#authMessage').textContent='';showDashboard();
  }catch(err){$('#authMessage').textContent=err.message||'Something went wrong. Please try again.';}}
 $('#authForm').addEventListener('submit',authSubmit);
